@@ -1,0 +1,274 @@
+
+
+
+
+<div *ngIf="fromModal===false" class="p-2 bg-light text-primary font-weight-bold" style="font-size: 0.8rem">
+
+    <span class="pull-right">
+
+      <button *ngIf="showUpload===false" (click)="toggleShowUpload()"
+              class="btn btn-primary btn-agi-sm pointer f-sm">dodaj pliki</button>
+
+      <button *ngIf="showUpload" (click)="toggleShowUpload()"
+              class="btn btn-danger btn-agi-sm pointer f-sm">dodaj pliki</button>
+
+
+      <input type="text" [(ngModel)]="newDir" style="font-size: 0.7rem" class="p-0 m-0 border-primary ml-3">
+      <button class="btn btn-primary btn-agi-sm f-sm" (click)="createDir();">utwórz folder</button>
+
+
+    </span>
+
+  Ścieżka: /{{actualDir}}
+
+</div>
+
+<ng-container *ngIf="showUpload">
+  <app-files-upload [actualDir]="actualDir" (uploaded)="uploaded()"></app-files-upload>
+</ng-container>
+
+
+
+
+<ng-container *ngIf="loading">
+
+  <h4 class="text-center p-4">wczytuję...</h4>
+
+</ng-container>
+
+<ng-container *ngIf="loading===false">
+
+
+  <div class="row bbottom-grey pb-2">
+
+    <div class="col-md-8 text-left">
+
+      <ng-container *ngIf="actualDir!='' && actualDir !='/'">
+
+        <div class="dirup" (click)="setDirUp()"> <i fa class="fas fa-arrow-circle-up"></i> [..]</div>
+
+      </ng-container>
+
+      <ng-container *ngIf="actualDir=='' || actualDir =='/'">
+
+        <div class="dirup"> <i fa class="fas fa-arrow-circle-right"></i> Katalog główny </div>
+
+      </ng-container>
+
+
+      <div
+          [model]="xdirs"
+          (drop)="dropToDir($event)"
+          class="ngx-dnd-container  ngx-dnd-blank agi-dir-list"
+          ngxDroppable="xdirs"
+          style="font-size: 0.8rem"
+
+      >
+
+        <div class="ngx-dnd-item move-disabled" ngxDraggable="['xdirs']" [moves]="false"
+             *ngFor="let item of xdirs; let index  = index"
+             [model] = "item"
+        >
+
+          <div class="row">
+
+            <div class="col-md-1 pointer">
+              <div class="p-md-1">
+                <i fa class="fas fa-bars"></i>
+              </div>
+            </div>
+
+            <div class="col-md-9 pointer font-weight-bold">
+              <div class="row">
+                <div class="col-md-8 p-md-1" (click)="setDir(actualDir + item.filename)">
+                  <i fa class="far fa-folder"></i>
+                  {{ item.filename }}
+                </div>
+                <div class="col-md-4">
+                  {{ item.mtime }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <button class="btn btn-danger btn-sm btn-block" (click)="deleteDir(item)">
+                <i fa class="fas fa-remove"></i>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+
+
+      <div style="border-top: 3px solid #d8d8d8;" class="mt-2 mb-2"></div>
+
+
+      <div class="agi-file-list ngx-dnd-container" style="font-size: 0.8rem">
+
+        <div class="row bg-light" style="margin-left: 0px;">
+          <div class="col-md-1">
+            <div class="p-md-1">
+              <i fa class="fas fa-bars"></i>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <div class="p-md-1">
+              <input type="checkbox" (click)="invertSelection()">
+            </div>
+          </div>
+          <div class="col-md-8 text-center">
+            <div class="row">
+              <div class="col-md-8 pt-1">
+                nazwa pliku
+              </div>
+              <div class="col-md-4 pt-1">
+                data
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div
+          [model]="xfiles"
+          ngxDroppable="xfiles"
+          class="ngx-dnd-container agi-file-list  ngx-dnd-blank" style="font-size: 0.8rem"
+
+      >
+
+        <div class="ngx-dnd-item  move-disabled" ngxDraggable [moves]="false"
+             *ngFor="let item of xfiles; let index  = index"
+             [model] = "item"
+        >
+
+          <div class="row">
+
+
+            <div class="col-md-1 pointer">
+              <div class="p-md-1">
+                <i fa class="fas fa-bars"></i>
+              </div>
+            </div>
+
+            <div class="col-md-1 pointer">
+              <div class="p-md-1">
+                <input type="checkbox" [(ngModel)]="item.selected" (change)="setselectedfiles()">
+              </div>
+            </div>
+
+            <div class="col-md-8 pointer" (click)="fileClick(item)">
+              <div class="row">
+                <div class="col-md-8 p-md-1">
+
+                  <i fa [name]="item.iconCss"></i>
+                  {{ item.filename }}
+                </div>
+                <div class="col-md-4 p-md-1">
+
+                  {{ item.mtime }} |
+
+                  <ng-container *ngIf="item.isImage === 1">
+                    <span *ngIf="item.thumbnail === 1"
+                          class="text-success"
+                          tooltip="istnieje miniaturka" placement="top"
+                    ><i fa class="fa-plus-square"></i></span>
+                    <span (click)="createThumbnail( item )" *ngIf="item.thumbnail === 0"
+                          class="text-danger"><i fa class="fa-minus-square"></i></span>
+                  </ng-container>
+
+                  <ng-container *ngIf="item.isImage === 0">
+                    <span class="text-light"><i fa class="fa-minus-square"></i></span>
+                  </ng-container>
+
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+
+              <button *ngIf="fromModal===false" class="btn btn-danger btn-sm btn-block" (click)="deleteFile(item)">
+                <i fa class="fas fa-remove"></i>
+              </button>
+
+              <button *ngIf="fromModal" class="btn btn-select btn-sm btn-block" (click)="chooseFile(item)">
+                <i fa class="fas fa-forward"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="col-md-4" style="border-left: solid 5px #d8d8d8; background-color: #f4f4f4">
+
+      <div class="agi-file-right">
+
+        <ng-container *ngIf="clickedImgFile!==''">
+
+          <div class="agi-file-preview">
+
+            <div class="file-img-preview mt-2" [style]="clickedImgFile"></div>
+            <div class="p-1 text-center bg-dark text-white" style="font-size: 0.8rem">{{clickedFile}}</div>
+            <div *ngIf="fromModal"
+                 (click)="chooseFile(clickedItem)"
+                 class="btn btn-primary btn-block mt-1 text-center text-white pointer" style="font-size: 0.8rem">wybierz</div>
+
+            <div class="bg-light p-2">
+              <span>Wybrany plik:</span>
+              <i fa class="fas fa-rotate-left pointer"></i>
+              <i fa class="fas fa-rotate-right ml-1 pointer"></i>
+            </div>
+          </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="selectedfiles.length > 0 && fromModal === false">
+          <div class="mt-2 bg-secondary p-2 text-white"
+               style="font-size: 0.8rem"
+          >
+
+            <span class="float-right">
+
+              <i fa class="fas fa-rotate-left pointer"></i>
+              <i fa class="fas fa-rotate-right ml-1 mr-3 pointer"></i>
+
+              <i fa class="fas fa-cut pointer mr-1"></i>
+              <i fa class="fas fa-copy pointer mr-1"></i>
+              <i fa class="fas fa-trash pointer"></i>
+            </span>
+            Zaznaczone pliki: {{selectedfiles.length}}
+          </div>
+        </ng-container>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+
+
+</ng-container>
+
+
+
+

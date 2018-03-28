@@ -1,0 +1,28 @@
+<nav class="agi-nav">
+
+  <span class="btn btn-default font-weight-bold">AGIcms</span>
+
+  <div class="btn-group float-right" dropdown placement="bottom right">
+
+    <span class="btn btn-default text-danger" (click)="logoutClick()">Wyloguj</span>
+
+    <a dropdownToggle type="button" class="btn btn-default dropdown-toggle">
+      Opcje <span class="caret"></span>
+    </a>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+      <li role="menuitem"><a class="dropdown-item" href="#">Użytkownicy</a></li>
+      <li role="menuitem"><a class="dropdown-item" routerLink="/configuration">Ustawienia</a></li>
+      <li class="divider dropdown-divider"></li>
+      <li role="menuitem"><a class="dropdown-item" routerLink="/about">O aplikacji</a>
+      </li>
+    </ul>
+  </div>
+  <a class="btn btn-default" routerLink="/categories/0">Baza stron</a>
+  <a class="btn btn-default" routerLink="/structure/1">Układ i menu</a>
+  <a class="btn btn-default" routerLink="/files">Pliki</a>
+  <a class="btn btn-default" routerLink="/galleries">Galerie</a>
+
+
+
+
+</nav>

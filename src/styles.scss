@@ -1,0 +1,323 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'variables';
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import "lists";
+
+
+
+
+body {
+
+  background-color: white;
+  color: black;
+
+}
+
+.agi-nav {
+
+  padding: 10px;
+  background-color: #fafafa;
+  margin-bottom: 10px;
+
+}
+
+.agi-nav a {
+
+}
+
+
+.sortable-item .category-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fafafa;
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
+  margin-bottom: 4px;
+  display: block;
+  position: relative;
+}
+
+.sortable-item-active {
+  background-color: aquamarine;
+}
+
+.pages-table {
+
+  font-size: 0.8rem;
+
+}
+
+.pages-table td {
+
+  cursor: pointer;
+
+}
+
+
+.bg-grey {
+
+  background-color: #eeeeee;
+
+}
+
+.btop-grey {
+
+  border-top: 3px solid #dbdbdb;
+
+}
+
+.bbottom-grey {
+
+  border-bottom: 3px solid #dbdbdb;
+
+}
+
+
+
+
+
+
+
+
+
+.categories-tree {
+
+  line-height: 1 !important;
+
+}
+
+.categories-tree .tree {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.categories-tree .node-value {
+
+  cursor: pointer;
+
+}
+
+.categories-tree .ct-empty {
+
+}
+
+.categories-tree .cat-level-0,
+.categories-tree .cat-level-
+
+{
+  padding: 15px;
+  color: #f8f8f8;
+  background-color: #101010;
+  border: 1px solid #e8e8e8 !important;
+  border-radius: 15px;
+}
+
+
+.categories-tree .cat-level-1 {
+  padding: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #e8e8e8 !important;
+  border-radius: 10px;
+}
+
+
+.categories-tree .cat-level-2 {
+  padding: 6px 10px 6px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #e8e8e8 !important;
+  font-size: 0.9rem;
+  border-radius: 10px;
+}
+
+
+.categories-tree .cat-level-3,
+.categories-tree .cat-level-4,
+.categories-tree .cat-level-5,
+.categories-tree .cat-level-6,
+.categories-tree .cat-level-7,
+.categories-tree .cat-level-8,
+.categories-tree .cat-level-9
+
+{
+  padding: 5px 10px 5px 10px;
+  background-color: #e8e8e8;
+  border: 1px solid #b8b8b8 !important;
+  font-size: 0.8rem;
+  border-radius: 10px;
+}
+
+.categories-tree .tree .folding {
+
+  display: none !important;
+
+}
+
+.categories-tree  .tree .node-value:after {
+
+  display: none !important;
+
+}
+
+
+.categories-tree .cat-node {
+  overflow: hidden;
+  margin: 0 0 0 0 !important;
+}
+
+.categories-tree .cat-node:hover {
+  background-color: #d0d0d0;
+}
+
+.categories-tree .value-container {
+  margin: 0 0 0 0;
+}
+
+.categories-tree .tree {
+  margin-left: 0 !important;
+  padding-left: 10px !important;
+  margin-bottom: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.sortable-item-fluid {
+  width: 100% !important;
+  padding: 1px;
+  border: 1px solid #f2f2f2;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.dirup {
+  padding: 5px;
+  border-left: 5px solid #000000;
+  margin-left: 10px;
+  padding-left: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.file-img-preview {
+
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 2px solid #e8e8e8;
+  background-color: #f2f2f2;
+
+}
+
+.f-sm {
+
+  font-size: 0.8rem;
+
+}
+
+.btn-agi-sm {
+  padding: 2px 6px 2px 6px;
+  font-size: 0.7rem !important;
+}
+
+
+.my-drop-zone { border: dotted 3px lightgray; }
+.nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+.another-file-over-class { border: dotted 3px green; }
+
+.agi-modal-wide {
+
+  width: 90% !important;
+  max-width: 90% !important;
+
+}
+
+
+
+.agi-file-right {
+
+  display: block;
+  position: sticky;
+  top: 50px;
+  right: 0;
+  width: 100%;
+
+}
+
+
+
+
+.agi-file-preview {
+
+  display: block;
+  position: relative;
+  width: 100%;
+
+}
+
+
+.agi-file-list .ngx-dnd-item:hover, .agi-dir-list .ngx-dnd-item:hover {
+  background-color: #e8e8e8 !important;
+}
+
+
+
+
+
+.lista-galerii {
+
+  border-bottom: 3px solid #e8e8e8;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

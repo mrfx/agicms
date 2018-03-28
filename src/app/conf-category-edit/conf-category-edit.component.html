@@ -1,0 +1,163 @@
+
+
+<div *ngIf="category===false" style="padding: 25px;">
+
+  <i fa class="fas fa-arrow-left"></i> WYBIERZ KATEGORIĘ PO LEWEJ
+
+</div>
+
+
+<div *ngIf="category !== false">
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1">Nazwa kategorii:</span>
+    </div>
+    <input [(ngModel)]="category.name" class="form-control form-control-sm" >
+  </div>
+
+  <table class="table">
+
+    <tr>
+
+      <td>
+        <select class="form-control form-control-sm" [(ngModel)]="newOptionType">
+          <option *ngFor="let ct of categoryTypes; let i = index" value="{{ct.id}}">
+            {{ct.name}}
+          </option>
+        </select>
+      </td>
+
+      <td>
+        <input class="form-control form-control-sm"
+               type="text" placeholder="nazwa" [(ngModel)]="newOptionName">
+      </td>
+
+      <td>
+        <button class="btn btn-success btn-sm btn-block" (click)="addOption()">
+          <i fa class="fas fa-plus"></i>
+        </button>
+      </td>
+
+    </tr>
+
+  </table>
+
+
+
+
+
+
+
+
+
+  <div *ngIf="categoryOptions.length>0">
+
+
+    <div
+        [model]="categoryOptions"
+        (drop)="changeOrder()"
+        class="ngx-dnd-container  ngx-dnd-blank"
+        ngxDroppable
+
+    >
+
+      <div class="ngx-dnd-item" ngxDraggable
+           *ngFor="let item of categoryOptions; let index  = index"
+           [model] = "item"
+      >
+
+        <div class="row">
+
+          <div class="col-md-1 pointer">
+            <div class="p-md-1">
+              <i fa class="fas fa-bars"></i>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+
+            <select class="form-control form-control-sm" [(ngModel)]="item.pageOptionsSiteTypesID">
+              <option *ngFor="let ct of categoryTypes; let ii = index" value="{{ct.id}}">
+                {{ct.name}}
+              </option>
+            </select>
+
+          </div>
+
+          <div class="col-md-5">
+            <input class="form-control form-control-sm"
+                   type="text" placeholder="nazwa" [(ngModel)]="item.name">
+          </div>
+
+          <div class="col-md-2">
+            <button class="btn btn-danger btn-sm btn-block" (click)="removeCategoryItem(index)">
+              <i fa class="fas fa-remove"></i>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="pt-2">
+
+      <button class="btn btn-success btn-sm btn-block" (click)="saveCategory()">ZAPISZ</button>
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<ng-template #templateModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{modalTitle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+
+    <div style="margin-bottom: 15px;" [innerHTML]="modalMessage" (click)="modalRouteClick($event)"> </div>
+
+    <button type="button" class="btn btn-default" (click)="modalConfirm()" >Tak</button>
+    <button type="button" class="btn btn-primary" (click)="modalDecline() " >Nie</button>
+
+  </div>
+</ng-template>
+
+
+
+
+
+

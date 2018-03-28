@@ -1,0 +1,54 @@
+
+
+
+
+<div class="row">
+
+
+  <div class="col-md-5 col-xs-12">
+
+    <ng-template #categoryTemplate let-item="item" let-index="index">
+      <span class="category-button" (click)="categoryClick(item)">{{item.value}}</span>
+      <span *ngIf="checkSubpages(item.initData.subpages['0'])==='object'">
+        <div class="row">
+          <div class="offset-1 col-md-11">
+            <app-item-sortable [sOption]="item.initData"></app-item-sortable>
+          </div>
+        </div>
+
+      </span>
+    </ng-template>
+
+    <h4>Kategorie:</h4>
+
+    <bs-sortable
+        [(ngModel)]="categories"
+        fieldName="name"
+        itemClass="sortable-item"
+        [itemTemplate]="categoryTemplate"
+        itemActiveClass="sortable-item-active"
+        placeholderItem="Drag here"
+        placeholderClass="placeholderStyle"
+        wrapperClass="sortable-wrapper"
+        (onChange)="changeOrderCategory()"
+
+    ></bs-sortable>
+    <br><br><br>
+    <pre class="code-preview d-none">model: {{ categories| json }}</pre>
+    <pre class="code-preview d-none">selected: {{ selectedCategory| json }}</pre>
+
+  </div>
+
+  <div class="col-md-7 col-xs-12">
+
+
+    <h4>Lista stron ( {{selectedCategory.name}} )</h4>
+
+    <div class="clearfix"></div>
+
+    <app-pages-list [pageCategory]="selectedCategory"></app-pages-list>
+
+  </div>
+
+</div>
+

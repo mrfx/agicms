@@ -1,0 +1,24 @@
+
+<div class="container">
+
+
+  <div *ngIf="logged">
+
+    <app-menu-top></app-menu-top>
+
+    <router-outlet></router-outlet>
+
+
+  </div>
+
+  <div *ngIf="logged===false">
+
+    <app-login></app-login>
+
+  </div>
+
+
+
+
+</div>
+

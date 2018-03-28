@@ -1,0 +1,73 @@
+
+
+<div *ngIf="loaded">
+
+
+  <div class="row p-3 lista-galerii ">
+
+    <div class="col-9">
+
+      <div class="input-group mb-3">
+
+        <div class="input-group-prepend">
+          <span class="input-group-text">Galeria:</span>
+        </div>
+
+        <input type="text" class="form-control" [(ngModel)]="gallery.titleCMS">
+
+        <div class="input-group-append">
+          <button class="btn btn-success" (click)="saveGallery()" type="button">ZAPISZ ZMIANY</button>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="col-3 text-right">
+
+      <button class="btn btn-primary" (click)="toggleShowAddFiles()">dodaj pliki</button>
+
+    </div>
+
+
+
+  </div>
+
+  <div [hidden]="!showAddFiles">
+
+    <app-files-list [fromGallery]="true" [fromModal]="true" (fileChoosed)="fileChoosed($event)"></app-files-list>
+
+  </div>
+
+  <div>
+
+    <div class="ngx-dnd-container gallery-boxes" style="border-left: 0px none !important;"
+         fxLayout="row"
+         fxLayoutWrap="wrap"
+         ngxDroppable="files"
+         [model]="galleryFiles"
+         [removeOnSpill]="true"
+    >
+
+      <div class="ngx-dnd-item float-left"
+           ngxDraggable
+           *ngFor="let item of galleryFiles; let i = index"
+            [model]="item"
+        >
+        <div class="gallery-file-box ngx-dnd-item" [style.background-image]="item.filenameShow">
+
+          <div class="gallery-item-text">
+            <input type="text" class="form-control form-control-sm w-100" [(ngModel)]="item.fileTitle">
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>

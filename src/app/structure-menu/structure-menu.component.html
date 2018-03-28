@@ -1,0 +1,171 @@
+
+<div class="row">
+
+
+  <div class="col-md-2" *ngIf="fullscreenTree===false">
+
+    <h6 class="agi-nag-tree">Wybierz kategorię:</h6>
+
+    <div class="cats">
+      <ng-container *ngFor="let c of categoriesArr; let i = index">
+
+        <div class="agi-cat agi-cat-level-{{c.level}}" (click)="catClick(c)">{{c.name}}</div>
+
+      </ng-container>
+    </div>
+
+  </div>
+
+  <div class="col-md-4 agi-pages-list" *ngIf="fullscreenTree===false">
+
+    <h6 class="agi-nag-tree">Przeciągnij strony:</h6>
+
+
+    <div *ngIf="selectedCat===0" style="padding: 25px;">
+
+      <i fa class="fas fa-arrow-left"></i> WYBIERZ KATEGORIĘ PO LEWEJ
+
+    </div>
+
+    <div *ngIf="pagesArr.length>0">
+
+
+      <ngx-dnd-container
+          [model]="pagesArr"
+          [copy]="true"
+          [dropZones]="['nestedLists']"
+
+      >
+
+        <ng-template let-item = "model" let-template="template" >
+
+          <div class="btn btn-outline-primarys btn-sm btn-block text-left">
+            <span class="float-right">({{item.pageID}})</span>
+            <span>{{item.titleCMS}}</span>
+          </div>
+
+        </ng-template>
+
+      </ngx-dnd-container>
+
+
+    </div>
+
+  </div>
+
+  <div [class]="treeClass">
+
+    <h6 class="agi-nag-tree">
+
+      <i *ngIf="fullscreenTree===false" fa class="fas fa-arrow-circle-left pointer" (click)="tooggleFullscreen()"></i>
+      <i *ngIf="fullscreenTree" fa class="fas fa-arrow-circle-right pointer" (click)="tooggleFullscreen()"></i>
+
+      Struktura serwisu:
+
+    </h6>
+
+    <ngx-dnd-container
+        [model]="menusArr"
+        dropZone="nestedLists"
+        (drop)="updateNestedOrder()"
+        [removeOnSpill]="true"
+        (remove)="updateNestedOrder()"
+        [moves]="allowMoves"
+
+    >
+
+      <ng-template let-item = "model" let-template="template" >
+
+        <div class="row menu-tree-item">
+
+          <div class="col-md-10 text-left p-0" style="font-size: 0.8rem">
+
+            <div class="input-group input-group-sm m-0">
+
+              <div class="input-group-prepend">
+                <button [tooltip]="item.id" class="input-group-text" ><i fa class="fas fa-info"></i></button>
+                <span class="input-group-text">{{item.titleCMS}}</span>
+              </div>
+
+              <select [(ngModel)]="item.templatesID" class="form-control"(change)="updateNestedOrder()" >
+
+                <ng-container *ngFor="let tt of templates; let ix = index">
+                  <option [ngValue]="tt.id">{{tt.nameCMS}}</option>
+                </ng-container>
+
+              </select>
+
+              <input type="text" class="form-control" [(ngModel)]="item.url" (blur)="updateNestedOrder()">
+
+              <div class="input-group-append">
+                <span class="input-group-text">({{item.pageID}})</span>
+              </div>
+
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <input type="checkbox" [(ngModel)]="item.enabled" (change)="changeCheckbox(item)">
+                </div>
+              </div>
+
+              <div class="input-group-append">
+                <ng-container *ngIf="item.lockedCMS==='0'">
+                  <div class="input-group-text text-danger pointer" (click)="removeItem(item)" >
+                    <i fa class="fas fa-remove "></i>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="item.lockedCMS==='1'">
+                  <div class="input-group-text text-secondary pointer" >
+                    <i fa class="fas fa-lock "></i>
+                  </div>
+                </ng-container>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="col-md-2">
+
+            <div class="btn btn-default btn-sm float-right"
+                 (click)="toggleNested(item)"
+                 [hidden]="item.showNested || item.children.length>0">
+              <span style="color:#a0a0a0"> <i fa class="fas fa-arrow-down"></i> </span> </div>
+
+            <div class="btn btn-default btn-sm float-right"
+                 (click)="toggleNested(item)"
+                 [hidden]="item.showNested || item.children.length==0">
+              <span style="color: #000080;font-weight: bold"> <i fa class="fas fa-arrow-down"></i> </span> </div>
+
+            <div class="btn btn-default btn-sm float-right"
+                 (click)="toggleNested(item)"
+                 [hidden]="!item.showNested"> <i fa class="fas fa-minus-square"></i> </div>
+
+
+          </div>
+
+
+
+        </div>
+
+
+        <div>
+          <ngx-dnd-container id="cc-{{item.id}}"
+                             [hidden]="!item.showNested"
+                             [model]="item.children"
+                             [template]="template"
+                             (drop)="updateNestedOrder()"
+                             dropZone="nestedLists"
+                             [moves]="allowMoves"
+          >
+          </ngx-dnd-container>
+
+        </div>
+      </ng-template>
+
+    </ngx-dnd-container>
+
+  </div>
+
+
+</div>

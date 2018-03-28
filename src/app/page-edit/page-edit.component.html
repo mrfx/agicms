@@ -1,0 +1,347 @@
+<div class="mb-4 pt-2" *ngIf="loaded===true">
+
+  <div class="text-left mb-4 bbottom-grey pb-3">
+
+    <h4>Edycja strony: <strong>{{page.titleCMS}}</strong></h4>
+
+  </div>
+
+
+  <div [hidden]="!showFiles">
+
+    <app-files-list [fromCKE]="true" [fromModal]="true" (fileChoosed)="fileChoosed($event)"></app-files-list>
+
+  </div>
+
+
+
+
+  <div class="row">
+
+    <div class="col-md-6" style="font-size: 0.8rem">
+
+      <div class="form-group row mb-0">
+        <label class="col-md-4 col-form-label text-right">nazwa (cms): </label>
+        <div class="col-md-8">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="page.titleCMS" (keyup)="updatePage()">
+        </div>
+      </div>
+
+      <div class="form-group row mb-0 mt-1">
+        <label class="col-md-4 col-form-label text-right">tytuł: </label>
+        <div class="col-md-8">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="page.title" (keyup)="updatePage()">
+        </div>
+      </div>
+
+      <div class="form-group row mb-0 mt-1">
+        <label class="col-md-4 col-form-label text-right">data utworzenia: </label>
+        <div class="col-md-8">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="page.dateCreate" disabled>
+        </div>
+      </div>
+
+      <div class="form-group row mb-0 mt-1">
+        <label class="col-md-4 col-form-label text-right">data modyfikacji: </label>
+        <div class="col-md-8">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="page.dateModified" disabled>
+        </div>
+      </div>
+
+
+
+      <h4 class="pt-3 mt-3 btop-grey">Galerie:</h4>
+
+      <div class="ngx-dnd-container"
+           ngxDroppable [model]="pageGalleries"
+           (change)="updateGallery()"
+           (drop)="updateGallery()"
+      >
+        <div class="ngx-dnd-item"
+             ngxDraggable
+             *ngFor="let item of pageGalleries; let ix = index"
+             [model]="item">
+
+          <span *ngIf="galleryKeysLoaded && loaded">
+
+            <div class="row">
+              <div class="col-md-5">
+                <span class="form-control-plaintext ml-2 pt-2">
+                  <i fa class="fas fa-bars mr-2"></i>
+                  {{ galleryKeys[ item.galleryID ].titleCMS }}
+                </span>
+              </div>
+              <div class="col-md-5">
+
+                <input type="text" class="form-control" name="gal-name-{{ix}}" [(ngModel)]="item.title">
+
+              </div>
+
+              <div class="col-md-2">
+                <span class="form-control-plaintext form-control-sm text-right mr-2">
+                  <span class="btn btn-sm btn-danger" (click)="removeGallery(item)">
+                    <i fa class="fa fa-remove"></i>
+                  </span>
+                </span>
+              </div>
+
+            </div>
+
+
+          </span>
+
+
+        </div>
+      </div>
+
+      <div class="pt-3 mt-2 btop-grey">
+        <form class="form-inline">
+
+
+          <div class="input-group mb-3 w-100 input-group-sm">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">wybierz:</span>
+            </div>
+            <select #addGalleryS class="form-control" name="wyborGalerii">
+              <ng-container *ngFor="let gal of gallery; let i = index">
+                <option value="{{gal.id}}">{{gal.titleCMS}}</option>
+              </ng-container>
+            </select>
+            <div class="input-group-append">
+              <span class="btn btn-success" (click)="addGallery(addGalleryS.value)"> dodaj galerię </span>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+
+    </div>
+
+
+    <div class="col-md-6">
+
+      PARAMETRY STRONY
+
+
+
+
+      <div *ngIf="page.options.length>0">
+
+
+        <div
+            [model]="page.options"
+            (drop)="changeOrder()"
+            class="ngx-dnd-container  ngx-dnd-blank"
+            ngxDroppable
+
+        >
+
+          <div class="ngx-dnd-item" ngxDraggable style="font-size: 0.8rem"
+               *ngFor="let item of page.options; let index  = index"
+               [model] = "item"
+          >
+
+
+            <ng-container *ngIf="optionsKeys[ item.category2optionsID ] !== undefined ">
+
+
+              <div class="row">
+
+                <div class="col-md-1 pointer">
+                  <div class="p-md-1">
+                    <i fa class="fas fa-bars"></i>
+                  </div>
+                </div>
+
+                <div class="col-md-9">
+
+
+                  <!-- POLA CKEDITOR -->
+                  <ng-container *ngIf="optionsKeys[ item.category2optionsID ].siteTypeArr.typeArr.name == 'ckeditor'">
+
+
+
+                    <button routerLink="/page-ckeditor/{{item.id}}"
+                            class="btn btn-sm btn-success btn-block"
+                    >edytuj {{ optionsKeys[ item.category2optionsID ].name }} ({{item.id}})</button>
+
+
+
+
+                  </ng-container>
+
+
+
+                  <!-- POLA DATY -->
+                  <ng-container *ngIf="optionsKeys[ item.category2optionsID ].siteTypeArr.typeArr.name == 'date'">
+
+                  <div class="form-group row mt-0 mb-0">
+                    <label class="col-md-4 col-form-label text-right">{{ optionsKeys[ item.category2optionsID ].name }}: </label>
+                    <div class="col-md-8">
+                      <input  class="form-control-sm form-control"
+                              (keyup)="updateField( item )"
+                              type="text" placeholder="" [(ngModel)]="item.value">
+                    </div>
+                  </div>
+
+                  </ng-container>
+
+
+
+                  <!-- POLA TEKSTOWE -->
+                  <ng-container *ngIf="optionsKeys[ item.category2optionsID ].siteTypeArr.typeArr.name == 'string'">
+
+
+                    <div class="form-group row mt-0 mb-0">
+                      <label class="col-md-4 col-form-label text-right">{{ optionsKeys[ item.category2optionsID ].name }}: </label>
+                      <div class="col-md-8">
+                        <input  class="form-control-sm form-control" type="text"
+                                (keyup)="updateField( item )"
+                                placeholder="" [(ngModel)]="item.value">
+                      </div>
+                    </div>
+
+
+                  </ng-container>
+
+
+
+                  <!-- POLA NUMER -->
+                  <ng-container *ngIf="optionsKeys[ item.category2optionsID ].siteTypeArr.typeArr.name == 'number'">
+
+
+
+
+
+                    <div class="form-group row mt-0 mb-0">
+                      <label class="col-md-4 col-form-label text-right">{{ optionsKeys[ item.category2optionsID ].name }}: </label>
+                      <div class="col-md-8">
+                        <input  class="form-control-sm form-control" type="text"
+                                (keyup)="updateField( item )"
+                                placeholder="" [(ngModel)]="item.value">
+                      </div>
+                    </div>
+
+
+                  </ng-container>
+
+
+
+
+                  <!-- POLA CHECKBOX -->
+                  <ng-container *ngIf="optionsKeys[ item.category2optionsID ].siteTypeArr.typeArr.name == 'checkbox'">
+
+
+                    <div class="form-group row mt-0 mb-0">
+                      <label class="col-md-4 col-form-label text-right">{{ optionsKeys[ item.category2optionsID ].name }}: </label>
+                      <div class="col-md-8 pt-2">
+                        <input  class="form-check-input" type="checkbox"
+                                (change)="updateField( item )"
+                                [(ngModel)]="item.value">
+                      </div>
+                    </div>
+
+
+                  </ng-container>
+
+
+
+
+                  <!-- POLA OBRAZEK -->
+                  <ng-container *ngIf="optionsKeys[ item.category2optionsID ].siteTypeArr.typeArr.name == 'imageUrl'">
+
+
+
+
+
+                    <div class="form-group row mt-0 mb-0">
+                      <label class="col-md-4 col-form-label text-right">{{ optionsKeys[ item.category2optionsID ].name }}: </label>
+                      <div class="col-md-8">
+                        <div class="input-group">
+                          <input  class="form-control-sm form-control" type="text"
+                                  (keyup)="updateField( item )"
+                                  placeholder="" [(ngModel)]="item.value">
+                          <div class="input-group-append">
+                            <button
+                                (click)="selectImage( item )"
+                                class="btn btn-sm btn-primary">wybierz</button>
+                          </div>
+
+                        </div>
+
+
+
+                      </div>
+                    </div>
+
+
+                  </ng-container>
+
+
+
+
+
+                </div>
+
+                <div class="col-md-2">
+                  <button class="btn btn-danger btn-sm btn-block" (click)="removeOption(item)">
+                    <i fa class="fas fa-remove"></i>
+                  </button>
+                </div>
+
+              </div>
+
+
+
+            </ng-container>
+
+
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+
+      <div class="row mt-3 pt-3" style="border-top: 3px solid #d8d8d8;">
+
+        <div class="col-md-8">
+          <select class="form-control form-control-sm" #newOption>
+            <option *ngFor="let item of options; let i = index"
+                    value="{{i}}">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <button class="btn-block btn btn-primary btn-sm"
+                  (click)="addOption(newOption.value)">
+            dodaj pole
+          </button>
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+

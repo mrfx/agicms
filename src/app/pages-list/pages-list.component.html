@@ -1,0 +1,56 @@
+
+
+<pre class="code-preview d-none">selected P: {{ pageCategory| json }}</pre>
+
+
+  <table class="table domeny table-hover table-bordered table-sm pages-table">
+    <thead>
+    <tr>
+      <th colspan="99">
+
+        <form class="form-inline w-100">
+          <div class="input-group mb-0 w-100">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Dodaj nową stronę:</span>
+            </div>
+            <input type="text" class="form-control" placeholder="nazwa (cms)" [(ngModel)]="newPageNameCms" name="newPageNameCms">
+            <div class="input-group-append"></div>
+            <span class="btn btn-success" (click)="pageAdd();">dodaj <i fa class="fas fa-plus-circle"></i></span>
+          </div>
+        </form>
+
+      </th>
+
+    </tr>
+    <tr>
+      <th colspan="99" style="background-color: #e8e8e8;">
+        <input type="text" [(ngModel)]="searchPages" placeholder="szukaj..." class="input-sm form-control" (keyup)="filterPages();">
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let page of filteredPages; let i = index">
+
+      <tr>
+        <td (click)="pageClick( page.id )">{{i+1}}</td>
+        <td (click)="pageClick( page.id )">{{page.id}}</td>
+        <td (click)="pageClick( page.id )">{{page.titleCMS}}</td>
+        <td (click)="pageClick( page.id )">{{page.title}}</td>
+        <ng-container *ngIf="page.lockedCMS==='0'">
+          <td (click)="pageDelete(page.id)"
+              class="bg-danger text-white text-center"><span><i fa class="fas fa-remove"></i></span></td>
+        </ng-container>
+
+        <ng-container *ngIf="page.lockedCMS==='1'">
+          <td
+              class="bg-light text-dark text-center"><span><i fa class="fas fa-lock"></i></span></td>
+        </ng-container>
+
+      </tr>
+
+    </ng-container>
+    </tbody>
+  </table>
+
+
+

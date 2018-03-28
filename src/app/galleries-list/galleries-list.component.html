@@ -1,0 +1,86 @@
+
+
+
+<div class="p-3">
+
+  <div class="float-right">
+    <button class="btn btn-primary btn-sm" (click)="toggleShowAddGallery()">dodaj galerię</button>
+  </div>
+  <h4 class="lista-galerii">Lista galerii:</h4>
+
+  <div class="p-3" *ngIf="this.showAddGallery">
+
+    <form class="form-inline" *ngIf="true">
+      <div class="form-group mb-2">
+        <label for="gallerynewtxt" class="sr-only"></label>
+        <input type="text" disabled class="form-control-plaintext" id="gallerynewtxt" value="Nazwa nowej galerii:">
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="inputgalleryname" class="sr-only">nazwa galerii</label>
+        <input #newGalleryName type="text" class="form-control" id="inputgalleryname" placeholder="nazwa galerii">
+      </div>
+      <button class="btn btn-success mb-2" (click)="createGallery( newGalleryName.value )">Utwórz nową galerię</button>
+    </form>
+
+  </div>
+
+
+  <div *ngIf="gallery.length==0" class="p-3 text-center">
+
+    BRAK GALERII!
+
+  </div>
+
+  <div *ngIf="gallery.length>0">
+
+
+
+    <ngx-dnd-container
+        [model]="gallery"
+        dropZone="gallery"
+
+    >
+
+      <ng-template let-item = "model" let-template="template" >
+
+        <span class="float-right">
+
+          <form class="form-inline">
+
+            <div class="input-group m-0 mr-2">
+            <input type="text" disabled readonly
+                   class="text-right form-control-plaintext" value="{{item.files.length}} zdjęć">
+            </div>
+
+            <span class="btn btn-danger ml-3" (click)="deleteGallery(item.id)">usuń</span>
+
+          </form>
+
+
+
+
+        </span>
+
+        <form class="form-inline">
+
+          <label class="ml-2 mr-4 pointer"><i fa class="fas fa-bars"></i></label>
+
+          <a routerLink="/gallery-edit/{{item.id}}" class="btn btn-primary m-0">edytuj</a>
+
+          <div class="form-group m-0 ml-2">
+
+            <input type="text" disabled readonly class="form-control-plaintext" value="{{item.titleCMS}}">
+
+          </div>
+
+        </form>
+
+      </ng-template>
+
+    </ngx-dnd-container>
+
+
+  </div>
+
+
+</div>

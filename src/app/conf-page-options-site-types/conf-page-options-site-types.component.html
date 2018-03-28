@@ -1,0 +1,68 @@
+<h4 class="bbottom-grey">
+  <a routerLink="/configuration">Konfiguracja</a> &rarr;
+  Typy opcji stron
+</h4>
+
+
+
+
+<div *ngIf="loaded==2">
+
+  <div>
+
+    <table class="table table-bordered">
+
+      <thead>
+
+        <th>#</th>
+        <th>typ</th>
+        <th>nazwa</th>
+        <th>JSON values (opcjonalnie)</th>
+        <th></th>
+
+
+      </thead>
+
+      <tr>
+
+        <td class="bg-grey"></td>
+        <td class="bg-grey">
+          <select [(ngModel)]="newOption.type" class="form-control">
+            <ng-template ngFor let-item [ngForOf]="pageTypesArray">
+              <option value="{{item.id}}">{{item.name}}</option>
+            </ng-template>
+          </select>
+        </td>
+        <td class="bg-grey">
+          <input class="form-control" type="text" [(ngModel)]="newOption.name">
+        </td>
+        <td class="bg-grey">
+          <input class="form-control" type="text" [(ngModel)]="newOption.jsonData">
+        </td>
+        <td class="bg-grey">
+          <button class="btn btn-success btn-block">dodaj</button>
+        </td>
+
+      </tr>
+
+      <tr *ngFor="let item of siteTypes; let i = index; trackBy: trackByIndex;">
+        <td>{{item.id}}</td>
+        <td>
+          {{pageTypes[item.pageOptionsType].name}}
+        </td>
+        <td>
+          <input class="form-control" type="text" [(ngModel)]="siteTypes[i].name" (keyup)="updateOption(siteTypes[i])">
+        </td>
+        <td>
+          <input class="form-control" type="text" [(ngModel)]="siteTypes[i].allowedValuesJSON" (keyup)="updateOption(siteTypes[i])">
+        </td>
+        <td>
+          <button class="btn btn-danger btn-block">usuń</button>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>

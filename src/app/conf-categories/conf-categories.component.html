@@ -1,0 +1,73 @@
+<h4 class="bbottom-grey">
+  <a routerLink="/configuration">Konfiguracja</a> &rarr;
+  Kategorie stron
+</h4>
+
+<div class="row">
+
+  <div class="col-md-5">
+
+    <ngx-dnd-container
+        [model]="nestedLists"
+        dropZone="nestedLists"
+        (drop)="updateNestedOrder()"
+
+    >
+
+      <ng-template let-item = "model" let-template="template" >
+
+        <div class="btn btn-default btn-sm float-right"
+             (click)="toggleNested(item)"
+             [hidden]="item.showNested || item.children.length>0"> <span style="color:#a0a0a0">&darr;</span> </div>
+        <div class="btn btn-default btn-sm float-right"
+             (click)="toggleNested(item)"
+             [hidden]="item.showNested || item.children.length==0"> <span style="color: #000080;font-weight: bold">&darr;</span> </div>
+
+        <div class="btn btn-default btn-sm float-right" (click)="toggleNested(item)" [hidden]="!item.showNested"> &middot; </div>
+
+        <div [style.backgroundColor]="setColor(item.id)" class="btn btn-default btn-sm btn-block" (click)="categoryClick(item)">
+          <span>{{item.label}}</span>
+        </div>
+        <div>
+          <ngx-dnd-container id="cc-{{item.id}}"
+              [hidden]="!item.showNested"
+              [model]="item.children"
+              [template]="template"
+              (drop)="updateNestedOrder()"
+              dropZone="nestedLists"
+          >
+          </ngx-dnd-container>
+
+        </div>
+      </ng-template>
+
+    </ngx-dnd-container>
+
+  </div>
+
+  <div class="col-md-7">
+
+
+    <diV>
+      <app-conf-category-edit [categoryId]="selectedCategoryID"></app-conf-category-edit>
+    </diV>
+
+    <div class="d-none">
+      <pre>
+      {{nestedLists | json }}
+      </pre>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+<br><br><br>
+
+
+
+

@@ -1,0 +1,13 @@
+
+
+<ng-container *ngFor="let item of subpages; let i = index">
+
+  <button class="btn btn-default btn-block btn-sm mb-1">{{item.name}}</button>
+
+  <div *ngIf="checkSubpages(item)==='object'" class="pl-md-4">
+
+    <app-item-sortable [sOption]="item"></app-item-sortable>
+
+  </div>
+
+</ng-container>

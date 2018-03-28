@@ -1,0 +1,15 @@
+{
+  "/srv": {
+    "target": "http://test.localhost",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/srv-upload": {
+    "target": "http://test.localhost",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
+

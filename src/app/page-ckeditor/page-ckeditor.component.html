@@ -1,0 +1,95 @@
+<div *ngIf="loaded">
+
+   <span *ngIf="pageSaved" class="float-right btn btn-success">
+      ZMIANY ZAPISANE
+    </span>
+
+
+  <div class="navbar text-left">
+
+
+    <span class="navbar-brand">
+      Edycja <strong>{{categoryOptions.name}}</strong> dla strony: <strong><a routerLink="/page-edit/{{pageOptions.pageID}}">{{page.titleCMS}}</a>  </strong>
+    </span>
+  </div>
+
+
+<ckeditor #ckeditor
+          [(ngModel)]="ckeditorContent"
+          [config]="{
+            uiColor: '#fefefe',
+            toolbarGroups: [
+              { name: 'document', groups: ['mode'] },
+              { name: 'clipboard', groups: ['undo'] },
+              { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+              { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+              { name: 'links' },
+              { name: 'insert' },
+              { name: 'styles' },
+              { name: 'colors' },
+              { name: 'tools' },
+              { name: 'others' }
+            ],
+            htmlEncodeOutput: false,
+            entities: false,
+            removePlugins: 'Save,Print,Preview,Find,About',
+            removeButtons: 'Save,Print,Preview, Flash',
+            allowedContent: true,
+            extraAllowedContent: 'b i'
+
+
+
+
+            }"
+          [readonly]="false"
+          (change)="onChange($event)"
+          (editorChange)="onEditorChange($event)"
+          (ready)="onReady($event)"
+          (focus)="onFocus($event)"
+          (blur)="onBlur($event)"
+          (contentDom)="onContentDom($event)"
+          (fileUploadRequest)="onFileUploadRequest($event)"
+          debounce="500">
+
+
+  <ckbutton [name]="'saveButton'"
+            [command]="'saveCmd'"
+            (click)="save($event)"
+            [icon]="'/agicms/assets/save.png'"
+            [label]="'Zapisz'"
+            [toolbar]="'document,1'"
+  >
+  </ckbutton>
+
+
+
+  <ckbutton [name]="'insertImageAgiButton'"
+            [command]="'insertFileCmd'"
+            (click)="insertFileDialog($event)"
+            [icon]="'/agicms/assets/add-image.png'"
+            [label]="'Wstaw Zdjęcie / Plik'"
+            [toolbar]="'insert,1'"
+  >
+  </ckbutton>
+
+
+</ckeditor>
+
+
+</div>
+
+
+
+<ng-template #templateModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{modalTitle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+
+    <app-files-list [fromModal]="true" [fromCKE]="true" (fileChoosed)="insertFile($event)"></app-files-list>
+
+  </div>
+</ng-template>
